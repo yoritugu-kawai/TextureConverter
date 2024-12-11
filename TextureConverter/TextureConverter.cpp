@@ -49,9 +49,9 @@ void TextureConverter::LoadWCTextureFromFile(const std::string& filePath)
 
 std::wstring TextureConverter::ConvertMultiByteStringToWideString(const std::string& mString)
 {
-	int filePathBufferSize = MultiByteToWideChar(CP_ACP,0,mString.c_str(),-1,nullptr,0);
-	std::wstring wString;
-	MultiByteToWideChar(CP_ACP,0,mString.c_str(),-1,&wString[0], filePathBufferSize);
 
-	return wString;
+	int sizeNeeded = MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(&mString[0]), static_cast<int>(mString.size()), NULL, 0);
+	std::wstring result(sizeNeeded, 0);
+	MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(&mString[0]), static_cast<int>(mString.size()), &result[0], sizeNeeded);
+	return result;
 }
